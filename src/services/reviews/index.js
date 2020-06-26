@@ -68,10 +68,10 @@ router.put("/:id",
     try {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-        let err = new Error()
-        err.message = errors
-        err.httpStatusCode = 400
-        next(err)
+            let err = new Error()
+            err.message = errors
+            err.httpStatusCode = 400
+            next(err)
         } else {
             let _createdAt
 
@@ -95,5 +95,17 @@ router.put("/:id",
         }
     } catch (err) { next(err) }
 })
+
+router.delete("/:id", (req,res) => {
+
+    let reviews = readFile(reviewsFile).filter( review => 
+        review._id !== req.params.id
+    )
+
+    fs.writeFileSync(reviewsFile, JSON.stringify(reviews))
+
+    res.send("Deleted!")
+})
+
 
 module.exports = router
