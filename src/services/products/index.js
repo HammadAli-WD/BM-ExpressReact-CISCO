@@ -21,12 +21,12 @@ const readFile = (fileName) => {
 router.get("/", (req, res) => {
     productsDB = readFile("products.json")
 
-    if (req.query && req.query.brand){
-        const filteredBrands = productsDB.filter( product =>
-            product.hasOwnProperty("brand") &&
-            product.brand.toLowerCase() === req.query.brand.toLowerCase()
+    if (req.query && req.query.category){
+        const filtered = productsDB.filter( product =>
+            product.hasOwnProperty("category") &&
+            product.category.toLowerCase() === req.query.category.toLowerCase()
         )
-        res.send(filteredBrands)
+        res.send(filtered)
     } else {
         res.send(productsDB)
     }
