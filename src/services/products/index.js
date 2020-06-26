@@ -18,12 +18,13 @@ const readFile = (fileName) => {
     return JSON.parse(fileContent)
 }
 
-router.get("/", (req, res) =>{
+router.get("/", (req, res) => {
     productsDB = readFile("products.json")
+
     if (req.query && req.query.brand){
-        const filteredBrands = productsDB.filter((product)=>
-        product.hasOwnProperty("brand") &&
-        product.brand.toLowerCase() === req.query.brand.toLowerCase()
+        const filteredBrands = productsDB.filter( product =>
+            product.hasOwnProperty("brand") &&
+            product.brand.toLowerCase() === req.query.brand.toLowerCase()
         )
         res.send(filteredBrands)
     } else {
@@ -35,6 +36,7 @@ router.get("/:id", (req, res, next) => {
     try {
         const productsDB = readFile("products.json")
         const product = productsDB.filter((product) => product.id === req.params.id)
+
         res.send(product)
     } catch (error) {
         error.httpStatusCode = 404
@@ -113,7 +115,7 @@ router.post("/",
     productsDB.push(newProduct)
     fs.writeFileSync(path.join(__dirname, "products.json"),
     JSON.stringify(productsDB))
-    res.status(201).send(productsDB)
+    res.status(201).send(newProduct)
     } catch (error) {
         next(error)
     }
