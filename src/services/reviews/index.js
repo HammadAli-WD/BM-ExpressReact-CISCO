@@ -24,7 +24,7 @@ router.post("/",
         body('comment').exists(),
         body('elementId').custom( _id => 
             readFile(productsFile).some( _product => 
-                _product._id === _id 
+                _product.id === _id 
             )
         ),
     ],
@@ -60,7 +60,7 @@ router.put("/:id",
         body('comment').exists(),
         body('elementId').custom( _id => {
             readFile(productsFile).some( _product => 
-                _product._id === _id 
+                _product.id === _id 
             )
         }),
     ],
