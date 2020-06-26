@@ -1,0 +1,31 @@
+{
+  "name": "BM-ExpressReact-CISCO",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hammad-87/BM-ExpressReact-CISCO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hammad-87/BM-ExpressReact-CISCO/issues"
+  },
+  "homepage": "https://github.com/Hammad-87/BM-ExpressReact-CISCO#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-list-endpoints": "^4.0.1",
+    "fs-extra": "^9.0.1",
+    "multer": "^1.4.2",
+    "uniqid": "^5.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
