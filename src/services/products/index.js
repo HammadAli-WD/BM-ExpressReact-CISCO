@@ -41,6 +41,28 @@ router.get("/:id", (req, res, next) => {
         next(error) 
     }
 })
+
+router.get("/:id/reviews", (req,res, next) => {
+
+    let product = readFile("products.json").find( product => 
+        product.id === req.params.id
+    )
+
+    if (product) {
+        let reviews = readFile("../reviews/reviews.json").filter( review => 
+            review.elementId === product.id
+        )
+
+        res.send(reviews)
+    } else {
+        let err = new Error()
+        err.message = "No products with this ID"
+        err.httpStatusCode = 400
+        next(err)
+    }
+
+})
+
 router.post("/",
 [
     check("name")
