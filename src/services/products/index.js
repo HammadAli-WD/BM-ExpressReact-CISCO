@@ -21,6 +21,16 @@ const readFile = (fileName) => {
 const axios = require("axios")
 const { xml2json } = require("xml-js")
 
+/**
+ * This function comment is parsed by doctrine
+ * @swagger
+ * @route GET /
+ * @group foo - Operations about user
+ * @param {string} email.query.required - username or email - eg: user@domain
+ * @param {string} password.query.required - user's password.
+ * @returns {object} 200 - An array of user info
+ * @returns {Error}  default - Unexpected error
+ */
 router.get("/", (req, res, next) => {
     productsDB = readFile("products.json")
 
@@ -71,8 +81,6 @@ router.get("/", (req, res, next) => {
                 }
             };
 
-            console.log(xml)
-                      
             axios.post(
                 "http://www.dneonline.com/calculator.asmx?op=Add", 
                 xml, 
