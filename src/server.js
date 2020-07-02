@@ -15,9 +15,9 @@ server.use(cors())
 server.use("/products", productsService)
 server.use("/reviews", reviewsService)
 
+server.use(errorsHandler)
 console.log(listEndpoints(server))
 
-server.use(errorsHandler)
 
 server.listen(3001, () => {
     console.log("server running @ port 3001")

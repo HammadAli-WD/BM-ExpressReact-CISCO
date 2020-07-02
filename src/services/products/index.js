@@ -18,15 +18,73 @@ const readFile = (fileName) => {
     return JSON.parse(fileContent)
 }
 
-router.get("/", (req, res) => {
+const axios = require("axios")
+
+router.get("/", (req, res, next) => {
     productsDB = readFile("products.json")
 
-    if (req.query && req.query.category){
-        const filtered = productsDB.filter( product =>
-            product.hasOwnProperty("category") &&
-            product.category.toLowerCase() === req.query.category.toLowerCase()
-        )
-        res.send(filtered)
+    if (req.query){
+        if (req.query.category) {
+
+            const filtered = productsDB.filter( product =>
+                product.hasOwnProperty("category") &&
+                product.category.toLowerCase() === req.query.category.toLowerCase()
+            )
+            res.send(filtered)
+        } 
+        else if (req.query.ids) {
+
+            let _ids = String(req.query.ids).split(" ")
+
+            if (_ids.length != 2) {
+                let err = new Error()
+                err.httpStatusCode = 400
+                err.message = "Invalid number of prds to sum"
+                next(err)
+            }
+
+            let prices = _ids.map( id => {
+                let product = productsDB.find( product => 
+                    product.id === id 
+                )
+                return product.price
+            })
+            
+            let xml = `
+                <soap12:Envelope 
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                 xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+                    <soap12:Body>
+                        <Add xmlns="http://tempuri.org/">
+                            <intA>${prices[0]}</intA>
+                            <intB>${prices[1]}</intB>
+                        </Add>
+                    </soap12:Body>
+                </soap12:Envelope>
+            `
+           
+            let config = {
+                headers: {
+                    'Content-Type': 'application/soap+xml; charset=utf-8'
+                }
+            };
+
+            console.log(xml)
+                      
+            axios.post(
+                "http://www.dneonline.com/calculator.asmx?op=Add", 
+                xml, 
+                config
+            ).then(response => 
+                res.send(response.data)
+            )
+
+
+        } 
+        else {
+            res.send(productsDB)
+        }
     } else {
         res.send(productsDB)
     }
