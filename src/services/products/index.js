@@ -19,6 +19,7 @@ const readFile = (fileName) => {
 }
 
 const axios = require("axios")
+const { xml2json } = require("xml-js")
 
 router.get("/", (req, res, next) => {
     productsDB = readFile("products.json")
@@ -76,11 +77,10 @@ router.get("/", (req, res, next) => {
                 "http://www.dneonline.com/calculator.asmx?op=Add", 
                 xml, 
                 config
-            ).then(response => 
-                res.send(response.data)
-            )
-
-
+            ).then(response => {
+                let data = xml2json(response.data, {compact: true, spaces: 4});
+                res.send(JSON.parse(data))
+            })
         } 
         else {
             res.send(productsDB)
